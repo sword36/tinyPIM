@@ -21,9 +21,15 @@
     <ClCompile Include="Address.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AddressBook.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Address.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AddressBook.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
