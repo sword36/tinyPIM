@@ -1,30 +1,24 @@
-#include "AddressBook.h"
+#include "Address.h"
+#include "AddressEditor.h"
 #include <iostream>
 
+void dump(const Address& a)
+{
+	std::cout << "***********";
+	std::cout << "Record: " << a.recordID() <<"\n"<<
+		a.firstname() << " " << a.lastname() << " " << a.phone() <<"\n" <<
+		a.address() << std::endl;
+}
 int main()
 {
-	AddressBook book;
 	Address a;
-	a.firstname("Jony");
-	a.lastname("Kashi");
-	a.phone("353245");
-	a.address("Akad, Niow, dom21");
-	
-	Address b;
-	b.firstname("Katya");
-	b.lastname("Shvedenko");
-	b.phone("89056544972");
-	b.address("ysman, 35");
-
-	int a_id = book.insertAddress(a);
-	int b_id = book.insertAddress(b);
-	book.print();
-
-	b.address("ysman, 42");
-	b.firstname("Ekater");
-	std::cout << "before replace\n";
-	book.replaceAddress(b, 2);
-	book.print();
-
+	AddressEditor editor(a);
+	while (a.firstname() != "done")
+	{
+		editor.edit();
+		a = editor.addr();
+		std::cout << std::endl;
+		dump(a);
+	}
 	return 0;
 }

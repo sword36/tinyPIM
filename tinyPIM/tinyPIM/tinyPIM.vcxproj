@@ -80,11 +80,15 @@
   <ItemGroup>
     <ClCompile Include="Address.cpp" />
     <ClCompile Include="AddressBook.cpp" />
+    <ClCompile Include="AddressEditor.cpp" />
+    <ClCompile Include="Editor.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Address.h" />
     <ClInclude Include="AddressBook.h" />
+    <ClInclude Include="AddressEditor.h" />
+    <ClInclude Include="Editor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
