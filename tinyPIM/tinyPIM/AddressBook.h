@@ -1,11 +1,11 @@
 #pragma once
 #include "Address.h"
-#include <list>
+#include <set>
 #include <algorithm>
 
 class AddressBook
 {
-	typedef std::list<Address> addrlist;
+	typedef std::multiset<Address> addrByName_t;
 public:
 	AddressBook(void);
 	~AddressBook(void);
@@ -23,14 +23,14 @@ public:
 
 	int countName(const std::string& firstname, 
 				  const std::string& lastname) const;
-	typedef addrlist::const_iterator const_iterator;
+	typedef addrByName_t::const_iterator const_iterator;
 	const_iterator begin() const {return addresses_.begin();}
 	const_iterator end() const {return addresses_.end();}
 	const_iterator firstNameStartsWith(const std::string& 
 		firstname, const std::string& lastname = "") const ;
 	const_iterator findNextContains(const std::string& 
 		searchStr, const_iterator start) const;
-	const_iterator findRecordID(int recordID) const 
+	const_iterator findRecordID(int recordID)  
 		throw(AddressNotFound);
 
 
@@ -38,11 +38,13 @@ public:
 
 private:
 	static int nextID_;
-	std::list<Address> addresses_;
-	std::list<Address>::iterator getByID(int recordID);
+	addrByName_t addresses_;
+	addrByName_t::iterator getByID(int recordID)
+				throw(AddressNotFound);
+	addrByName_t::const_iterator getByID(int recordID) const
+				throw(AddressNotFound);
 	enum {notFound = -1};
 	AddressBook(const AddressBook&);
 	AddressBook operator=(const AddressBook&);
-	typedef std::list<Address> addrlist;
 };
 
