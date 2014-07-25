@@ -69,6 +69,17 @@ const Address& AddressBook::getAddress(int recordID) const throw(AddressNotFound
 	return *index;
 }
 
+int AddressBook::countName(const std::string& firstname,
+						   const std::string& lastname) const
+{
+	Address searchAddr;
+	searchAddr.firstname(firstname);
+	searchAddr.lastname(lastname);
+	return std::count_if(addresses_.begin(), addresses_.end(), 
+		[searchAddr](Address a) -> bool {return (a.firstname() == searchAddr.firstname()) &&
+										(a.lastname() == searchAddr.lastname());});
+}
+
 void AddressBook::print() const
 {
 	for (AddressBook::addrlist::const_iterator i = addresses_.begin(); i != addresses_.end(); ++i)
