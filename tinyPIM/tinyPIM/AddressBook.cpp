@@ -18,12 +18,14 @@ int AddressBook::insertAddress(const Address& addr, int recordID) throw(Duplicat
 		recordID = nextID_++;
 	else if (recordID >= nextID_)
 		nextID_ = recordID + 1;
-	else if (getByID(recordID) != addresses_.end())
+	else if (addrByID_.count(recordID))
 		throw DuplicateID();
 
 	Address addrCopy(addr);
 	addrCopy.recordID(recordID);
-	addresses_.insert(addrCopy);
+	addrByName_t::iterator i = addresses_.insert(addrCopy);
+	addrByID_.insert(std::make_pair(recordID, i));
+	//addrByID_[recordID] = i;
 
 	return recordID;
 }
@@ -31,27 +33,26 @@ int AddressBook::insertAddress(const Address& addr, int recordID) throw(Duplicat
 AddressBook::addrByName_t::iterator AddressBook::getByID(int recordID) 
 	throw(AddressNotFound)
 {
-	for (addrByName_t::iterator i = addresses_.begin(); i != addresses_.end(); ++i)
-		if (i -> recordID() == recordID)
-			return i;
-	return addresses_.end();
+	addrByID_t::iterator idIter = addrByID_.find(recordID);
+	if (idIter == addrByID_.end())
+		throw AddressNotFound();
+	return idIter -> second;
 }
 
-AddressBook::addrByName_t::const_iterator AddressBook::getByID(int recordID) const 
+AddressBook::addrByName_t::const_iterator AddressBook::getByID(int recordID) const
 	throw(AddressNotFound)
 {
-	for (addrByName_t::const_iterator i = addresses_.begin(); i != addresses_.end(); ++i)
-		if (i -> recordID() == recordID)
-			return i;
-	return addresses_.end();
+	addrByID_t::const_iterator idIter = addrByID_.find(recordID);
+	if (idIter == addrByID_.end())
+		throw AddressNotFound();
+	return idIter -> second;
 }
 
 void AddressBook::eraseAddress(int recordID) throw(AddressNotFound)
 {
 	addrByName_t::iterator index = getByID(recordID);
-	if (index == addresses_.end())
-		throw AddressNotFound();
 	addresses_.erase(index);
+	addrByID_.erase(recordID);
 }
 
 void AddressBook::replaceAddress(const Address& addr, int recordID) throw(AddressNotFound)
@@ -65,16 +66,11 @@ void AddressBook::replaceAddress(const Address& addr, int recordID) throw(Addres
 	insertAddress(addr, recordID);
 }
 
-/*const Address& AddressBook::getAddress(int recordID) const throw(AddressNotFound)
+const Address& AddressBook::getAddress(int recordID) const throw(AddressNotFound)
 {
-	std::list<Address>::const_iterator index;
-	for (index = addresses_.begin(); index != addresses_.end(); ++index)
-		if (index -> recordID() == recordID)
-			break;
-	if (index == addresses_.end())
-		throw AddressNotFound();
+	addrByName_t::const_iterator index = getByID(recordID);
 	return *index;
-}*/
+}
 
 int AddressBook::countName(const std::string& firstname,
 						   const std::string& lastname) const

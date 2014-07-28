@@ -1,11 +1,13 @@
 #pragma once
 #include "Address.h"
 #include <set>
+#include <map>
 #include <algorithm>
 
 class AddressBook
 {
 	typedef std::multiset<Address> addrByName_t;
+	typedef std::map<int, addrByName_t::iterator> addrByID_t;
 public:
 	AddressBook(void);
 	~AddressBook(void);
@@ -38,6 +40,7 @@ public:
 
 private:
 	static int nextID_;
+	addrByID_t addrByID_;
 	addrByName_t addresses_;
 	addrByName_t::iterator getByID(int recordID)
 				throw(AddressNotFound);
